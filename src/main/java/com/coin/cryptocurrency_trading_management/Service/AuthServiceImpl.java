@@ -1,11 +1,12 @@
 package com.coin.cryptocurrency_trading_management.Service;
 
+import com.coin.cryptocurrency_trading_management.Entity.Enum.Role;
 import com.coin.cryptocurrency_trading_management.Entity.Session;
 import com.coin.cryptocurrency_trading_management.Entity.User;
 import com.coin.cryptocurrency_trading_management.Repository.Interface.SessionRepository;
 import com.coin.cryptocurrency_trading_management.Repository.Interface.UserRepository;
-import com.coin.cryptocurrency_trading_management.Repository.Interface.WalletRepository;
 import com.coin.cryptocurrency_trading_management.Service.Interface.AuthService;
+import com.coin.cryptocurrency_trading_management.Service.Interface.WalletService;
 import com.coin.cryptocurrency_trading_management.Util.Exception.BusinessException;
 import com.coin.cryptocurrency_trading_management.Util.Exception.DuplicateResourceException;
 import com.coin.cryptocurrency_trading_management.Util.Exception.ResourceNotFoundException;
@@ -23,7 +24,8 @@ public class AuthServiceImpl implements AuthService {
 
     private final UserRepository userRepository;
     private final SessionRepository sessionRepository;
-    private final WalletRepository walletRepository;
+    private final WalletService walletService;
+
 
     @Override
     public void register(String username, String password, String againPassword) throws IOException {
@@ -43,7 +45,10 @@ public class AuthServiceImpl implements AuthService {
         User user = new User();
         user.setUsername(username);
         user.setPassword(password);
+        user.setRole(Role.User);
         userRepository.save(user);
+        var registerUser = userRepository.getUserByUsername(username);
+        walletService.createWallet(registerUser.getId());
     }
 
     @Override
@@ -125,6 +130,15 @@ public class AuthServiceImpl implements AuthService {
         Session session = getActiveCurrentSession();
         if (session != null) {
             return userRepository.getById(session.getUserId());
+        }
+        return null;
+    }
+
+    @Override
+    public Role getCurrentRole() throws IOException {
+        var user = getCurrentUser();
+        if (user != null) {
+            return user.getRole();
         }
         return null;
     }

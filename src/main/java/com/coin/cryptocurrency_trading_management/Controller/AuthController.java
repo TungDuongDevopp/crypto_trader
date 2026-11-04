@@ -1,7 +1,6 @@
 package com.coin.cryptocurrency_trading_management.Controller;
 
-import com.coin.cryptocurrency_trading_management.Entity.Session;
-import com.coin.cryptocurrency_trading_management.Entity.User;
+import com.coin.cryptocurrency_trading_management.Entity.Enum.Role;
 import com.coin.cryptocurrency_trading_management.Service.Interface.AuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -21,26 +20,18 @@ public class AuthController {
         authService.register(username, password, passwordAgain);
     }
 
-    public void logout() throws IOException {
-        authService.logout();
-    }
+
     public void changePassword(String oldPassword, String newPassword) throws IOException {
         authService.changePassword(oldPassword, newPassword);
     }
 
-    public Session getCurrentSession() throws IOException {
-        return authService.getCurrentSession();
-    }
-
-    public Session getActiveCurrentSession() throws IOException {
-        return authService.getActiveCurrentSession();
-    }
 
     public boolean hasActiveSession() throws IOException {
         return authService.getActiveCurrentSession() != null;
     }
 
-    public User getCurrentUser() throws IOException {
-        return authService.getCurrentUser();
+    public Role getCurrentRole() throws IOException {
+        return authService.getCurrentRole();
     }
+
 }
