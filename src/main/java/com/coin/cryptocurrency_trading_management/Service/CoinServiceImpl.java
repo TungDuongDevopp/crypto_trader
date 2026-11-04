@@ -1,12 +1,10 @@
 package com.coin.cryptocurrency_trading_management.Service;
 
-import com.coin.cryptocurrency_trading_management.DTO.Coin.CoinChangePriceRequest;
-import com.coin.cryptocurrency_trading_management.DTO.Coin.CoinChangeStatusRequest;
-import com.coin.cryptocurrency_trading_management.DTO.Coin.CoinRequestCreate;
-import com.coin.cryptocurrency_trading_management.DTO.Coin.CoinRequestUpdate;
-import com.coin.cryptocurrency_trading_management.Entity.Coin;
+import com.coin.cryptocurrency_trading_management.DTO.Coin.*;
 import com.coin.cryptocurrency_trading_management.Repository.Interface.CoinRepository;
 import com.coin.cryptocurrency_trading_management.Service.Interface.CoinService;
+import com.coin.cryptocurrency_trading_management.Util.Exception.ResourceNotFoundException;
+import com.coin.cryptocurrency_trading_management.Util.Mapper.CoinMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -16,28 +14,55 @@ import java.util.List;
 @Service
 public class CoinServiceImpl implements CoinService {
     private final CoinRepository coinRepository;
+    private final CoinMapper coinMapper;
     @Override
-    public List<Coin> getAll() throws IOException {
-        return coinRepository.getAll();
+    public List<CoinResponse> getAll() throws IOException {
+       var coins = coinRepository.getAll();
+       return coinMapper.toResponseList(coins);
     }
 
     @Override
-    public void create(CoinRequestCreate createRequest) {
-
+    public CoinResponse create(CoinRequestCreate createRequest) throws IOException {
+        var coin = coinMapper.toEntity(createRequest);
+        coinRepository.save(coin);
+        return coinMapper.toResponse(coin);
     }
 
     @Override
-    public boolean changeStatus(CoinChangeStatusRequest statusRequest) {
-        return false;
+    public CoinResponse changeStatus(CoinChangeStatusRequest statusRequest) throws IOException {
+        var coinInDb = coinRepository.getById(statusRequest.getId());
+        if(coinInDb == null) {
+            throw new ResourceNotFoundException("Coin not found with id: " + statusRequest.getId());
+        }
+        coinInDb.setStatus(statusRequest.getStatus());
+        coinRepository.updateById(coinInDb.getId(),coinInDb);
+        return coinMapper.toResponse(coinInDb);
     }
 
     @Override
-    public void changePrice(CoinChangePriceRequest priceRequest) {
-
+    public CoinResponse changePrice(CoinChangePriceRequest priceRequest) throws IOException {
+        var coinInDb = coinRepository.getById(priceRequest.getId());
+        if(coinInDb == null) {
+            throw new ResourceNotFoundException("Coin not found with id: " + priceRequest.getId());
+        }
+        coinInDb.setPrice(priceRequest.getPrice());
+        coinRepository.updateById(coinInDb.getId(),coinInDb);
+        return coinMapper.toResponse(coinInDb);
     }
 
     @Override
-    public void update(CoinRequestUpdate updateRequest) {
-
+    public CoinResponse update(CoinRequestUpdate updateRequest) throws IOException {
+        var coinInDb = coinRepository.getById(updateRequest.getId());
+        if(coinInDb == null) {
+            throw new ResourceNotFoundException("Coin not found with id " + updateRequest.getId());
+        }
+        if(updateRequest.getName() != null && !updateRequest.getName().isBlank()) {
+            coinInDb.setName(updateRequest.getName());
+        }
+        if(updateRequest.getDescription() != null && !updateRequest.getDescription().isBlank()) {
+            coinInDb.setDescription(updateRequest.getDescription());
+        }
+        coinRepository.updateById(coinInDb.getId(),coinInDb);
+        return coinMapper.toResponse(coinInDb);
     }
 }
