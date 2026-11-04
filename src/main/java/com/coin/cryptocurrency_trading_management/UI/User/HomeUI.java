@@ -69,32 +69,28 @@ public class HomeUI {
             );
             String choice = scanner.nextLine().trim();
             switch (choice) {
-                case "4":
-                    walletUI.printWallet();
-                    break;
-                case "5":
-                    changePasswordUI.printChangePasswordForm();
-                    break;
-                case "6":
-                    try{
-                        homeController.logout();
-                        System.out.println(
-                                ConsoleColor.GREEN + ConsoleColor.BOLD
-                                        + "Logged out successfully!"
-                                        + ConsoleColor.RESET
-                        );
-                    }
-                    catch (IOException e){
-                        System.out.println(
-                                ConsoleColor.RED
-                                        + "Logout failed!"
-                                        + ConsoleColor.RESET
-                        );
-                    }
-                    return;
-                default:
-                    System.out.println("Invalid choice, please try again.");
+                case "4" ->walletUI.printWallet();
+                case "5" -> changePasswordUI.printChangePasswordForm();
+                case "6" -> logout();
+                default -> System.out.println("Invalid choice, please try again.");
             }
+        }
+    }
+    private void logout(){
+        try{
+            homeController.logout();
+            System.out.println(
+                    ConsoleColor.GREEN + ConsoleColor.BOLD
+                            + "Logged out successfully!"
+                            + ConsoleColor.RESET
+            );
+        }
+        catch (IOException e){
+            System.out.println(
+                    ConsoleColor.RED
+                            + "Logout failed!"
+                            + ConsoleColor.RESET
+            );
         }
     }
 }

@@ -5,12 +5,16 @@ import com.coin.cryptocurrency_trading_management.Entity.Enum.CoinSymbol;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.math.BigDecimal;
 
+@Getter
+@Setter
 public class CoinRequestCreate {
 
-    @NotBlank(message = "Name can't not be null")
+    @NotBlank(message = "Name can't not be null or empty")
     private String name;
 
     @Positive(message = "Price must greater than zero")

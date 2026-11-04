@@ -1,8 +1,8 @@
 package com.coin.cryptocurrency_trading_management.UI.Admin;
 
 import com.coin.cryptocurrency_trading_management.Controller.DashboardController;
-import com.coin.cryptocurrency_trading_management.Controller.UserController;
 import com.coin.cryptocurrency_trading_management.DTO.DashboardDTO;
+import com.coin.cryptocurrency_trading_management.UI.Admin.Coin.AdminCoinUI;
 import com.coin.cryptocurrency_trading_management.UI.ChangePasswordUI;
 
 import com.coin.cryptocurrency_trading_management.Util.ConsoleColor;
@@ -20,6 +20,7 @@ public class DashboardUI {
     private final Scanner scanner;
     private final DashboardController dashboardController;
     private final AdminUserUI adminUserUI;
+    private final AdminCoinUI adminCoinUI;
     public void printDashboard() {
         DashboardDTO dashboard;
         try{
@@ -72,32 +73,29 @@ public class DashboardUI {
             );
             String choice = scanner.nextLine().trim();
             switch (choice) {
-                case "1":
-                    adminUserUI.show();
-                    break;
-                case "5":
-                    changePasswordUI.printChangePasswordForm();
-                    break;
-                case "6":
-                    try{
-                        dashboardController.logout();
-                        System.out.println(
-                                ConsoleColor.GREEN + ConsoleColor.BOLD
-                                        + "Logged out successfully!"
-                                        + ConsoleColor.RESET
-                        );
-                    }
-                    catch (IOException e){
-                        System.out.println(
-                                ConsoleColor.RED
-                                        + "Logout failed!"
-                                        + ConsoleColor.RESET
-                        );
-                    }
-                    return;
-                default:
-                    System.out.println("Invalid choice, please try again.");
+                case "1" -> adminUserUI.show();
+                case "2" -> adminCoinUI.show();
+                case "5" ->changePasswordUI.printChangePasswordForm();
+                case "6" ->logout();
+                default -> System.out.println("Invalid choice, please try again.");
             }
+        }
+    }
+    private void logout(){
+        try{
+            dashboardController.logout();
+            System.out.println(
+                    ConsoleColor.GREEN + ConsoleColor.BOLD
+                            + "Logged out successfully!"
+                            + ConsoleColor.RESET
+            );
+        }
+        catch (IOException e){
+            System.out.println(
+                    ConsoleColor.RED
+                            + "Logout failed!"
+                            + ConsoleColor.RESET
+            );
         }
     }
 }
