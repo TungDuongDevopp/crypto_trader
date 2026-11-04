@@ -2,6 +2,7 @@ package com.coin.cryptocurrency_trading_management.Repository;
 
 import com.coin.cryptocurrency_trading_management.Entity.User;
 import com.coin.cryptocurrency_trading_management.Repository.Interface.UserRepository;
+import com.coin.cryptocurrency_trading_management.Util.Exception.ResourceNotFoundException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
@@ -20,6 +21,6 @@ public class UserRepositoryImpl extends FileRepositoryImpl<User> implements User
         return getAll().stream()
                 .filter(user -> user.getUsername().equalsIgnoreCase(username))
                 .findFirst()
-                .orElse(null);
+                .orElseThrow(()-> new ResourceNotFoundException(("User not found with username:"+ username)));
     }
 }

@@ -8,6 +8,7 @@ import com.coin.cryptocurrency_trading_management.Repository.SessionRepositoryIm
 import com.coin.cryptocurrency_trading_management.Repository.UserRepositoryImpl;
 import com.coin.cryptocurrency_trading_management.Repository.WalletRepositoryImpl;
 import com.coin.cryptocurrency_trading_management.Service.AuthServiceImpl;
+import com.coin.cryptocurrency_trading_management.Service.Interface.WalletService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -27,14 +28,14 @@ public class CurrentSessionTest {
     private SessionRepositoryImpl sessionRepository;
     private Path currentSessionPath;
     private final String testDataDir = "Data";
-    private WalletRepositoryImpl walletRepository;
+    private WalletService walletService;
 
     @BeforeEach
     void setUp() throws IOException {
         ObjectMapper objectMapper = new JacksonConfig().objectMapper();
         userRepository = new UserRepositoryImpl(testDataDir, objectMapper);
         sessionRepository = new SessionRepositoryImpl(testDataDir, objectMapper);
-        authService = new AuthServiceImpl(userRepository, sessionRepository,walletRepository);
+        authService = new AuthServiceImpl(userRepository, sessionRepository,walletService);
         currentSessionPath = Path.of(testDataDir, "current_session.json");
 
         sessionRepository.deleteCurrentSession();

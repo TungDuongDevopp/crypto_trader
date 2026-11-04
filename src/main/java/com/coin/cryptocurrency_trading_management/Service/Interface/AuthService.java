@@ -1,5 +1,6 @@
 package com.coin.cryptocurrency_trading_management.Service.Interface;
 
+import com.coin.cryptocurrency_trading_management.Entity.Enum.Role;
 import com.coin.cryptocurrency_trading_management.Entity.Session;
 import com.coin.cryptocurrency_trading_management.Entity.User;
 
@@ -19,4 +20,6 @@ public interface AuthService {
     Session getActiveCurrentSession() throws IOException;
 
     User getCurrentUser() throws IOException;
+
+    Role getCurrentRole() throws IOException;
 }

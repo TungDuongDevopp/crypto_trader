@@ -25,13 +25,17 @@ public class WalletServiceImpl implements WalletService {
     }
 
     @Override
-    public Wallet createWallet(long userId) throws IOException {
+    public void createWallet(long userId) throws IOException {
         var wallet = new Wallet();
         wallet.setUserId(userId);
         wallet.setAddress(generateWalletAddress());
         wallet.setBalance(new BigDecimal("300"));
         wallet.setCurrency(Currency.USD);
         walletRepository.save(wallet);
-        return wallet;
+    }
+
+    @Override
+    public Wallet getWalletByUserId(long userId) throws IOException {
+        return walletRepository.getWalletByUserId(userId);
     }
 }
