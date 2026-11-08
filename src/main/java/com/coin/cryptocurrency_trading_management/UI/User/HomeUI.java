@@ -19,6 +19,8 @@ public class HomeUI {
     private final ChangePasswordUI changePasswordUI;
     private final WalletUI walletUI;
     private final Scanner scanner;
+    private final PortfolioUI portfolioUI;
+    private final MarketUI marketUI;
 
     public void printDashboard() {
         HomeDTO dashboard;
@@ -55,8 +57,8 @@ public class HomeUI {
                     ----------------------------------------
                     1. View Market
                     2. AI Analysis
-                    3. My Portfolio
-                    4. Wallet
+                    3. Wallet
+                    4. Portfolio
                     5. Change Password
                     6. Logout
                     
@@ -69,9 +71,14 @@ public class HomeUI {
             );
             String choice = scanner.nextLine().trim();
             switch (choice) {
-                case "4" ->walletUI.printWallet();
+                case "1" -> marketUI.show();
+                case "3" -> walletUI.printWallet();
+                case "4" -> portfolioUI.show();
                 case "5" -> changePasswordUI.printChangePasswordForm();
-                case "6" -> logout();
+                case "6" -> {
+                    logout();
+                    return;
+                }
                 default -> System.out.println("Invalid choice, please try again.");
             }
         }

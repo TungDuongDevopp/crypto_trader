@@ -10,6 +10,8 @@ import java.util.List;
 public interface CoinService {
     List<CoinResponse> getAll() throws IOException;
 
+    CoinResponse getById(long id) throws IOException;
+
     CoinResponse create(CoinRequestCreate createRequest) throws IOException;
 
     CoinResponse changeStatus(CoinChangeStatusRequest statusRequest) throws IOException;

@@ -16,6 +16,9 @@ public class CoinController {
     public List<CoinResponse> getCoins() throws IOException {
         return coinService.getAll();
     }
+    public CoinResponse getCoinById(long id) throws IOException {
+        return coinService.getById(id);
+    }
     public CoinResponse createCoin(CoinRequestCreate coinRequestCreate) throws IOException {
         return coinService.create(coinRequestCreate);
     }
