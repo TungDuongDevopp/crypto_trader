@@ -1,8 +1,11 @@
-package com.coin.cryptocurrency_trading_management.DTO;
+package com.coin.cryptocurrency_trading_management.DTO.Wallet;
 
 import com.coin.cryptocurrency_trading_management.Entity.Enum.Currency;
 import com.coin.cryptocurrency_trading_management.Entity.Enum.WalletStatus;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.math.BigDecimal;
 
@@ -10,8 +13,7 @@ import java.math.BigDecimal;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
-public class WalletDTO {
+public class UserWalletResponse {
     private String address;
     private WalletStatus status;
     private Currency currency;

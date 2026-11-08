@@ -9,10 +9,10 @@ import java.math.BigDecimal;
 
 @Setter @Getter
 public class CoinChangePriceRequest {
-    @NotNull
     @Positive(message = "id must greater than zero")
     private long id;
 
     @Positive(message = "price must greater than zero")
+    @NotNull
     private BigDecimal price;
 }

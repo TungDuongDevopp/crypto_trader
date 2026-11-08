@@ -1,11 +1,12 @@
 package com.coin.cryptocurrency_trading_management.UI.User;
 
 import com.coin.cryptocurrency_trading_management.Controller.WalletController;
-import com.coin.cryptocurrency_trading_management.DTO.WalletDTO;
+import com.coin.cryptocurrency_trading_management.DTO.Wallet.UserWalletResponse;
 import com.coin.cryptocurrency_trading_management.Util.ConsoleColor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.math.BigDecimal;
 import java.util.Scanner;
 
 @Component
@@ -17,11 +18,15 @@ public class WalletUI {
 
     public void printWallet() {
         while (true) {
-            WalletDTO wallet = walletController.getWalletInfo();
+            UserWalletResponse wallet = walletController.getWalletInfo();
             if (wallet == null) {
                 System.out.println(ConsoleColor.RED + "Cannot retrieve wallet information." + ConsoleColor.RESET);
                 return;
             }
+
+            BigDecimal balance = wallet.getBalance() != null ? wallet.getBalance() : BigDecimal.ZERO;
+            BigDecimal totalDeposited = wallet.getTotalDeposited() != null ? wallet.getTotalDeposited() : BigDecimal.ZERO;
+            BigDecimal totalWithdrawn = wallet.getTotalWithdrawn() != null ? wallet.getTotalWithdrawn() : BigDecimal.ZERO;
 
             System.out.printf("""
                 ========================================
@@ -53,9 +58,9 @@ public class WalletUI {
                     wallet.getAddress(),
                     wallet.getStatus(),
                     wallet.getCurrency(),
-                    wallet.getBalance(),
-                    wallet.getTotalDeposited(),
-                    wallet.getTotalWithdrawn()
+                    balance,
+                    totalDeposited,
+                    totalWithdrawn
             );
             String choice = scanner.nextLine().trim();
             switch (choice) {
